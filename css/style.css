@@ -732,6 +732,8 @@ p  { line-height: 1.75; }
 .ci-icon svg { width: 20px; height: 20px; }
 .ci-label { display: block; font-size: .75rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--light); margin-bottom: 3px; }
 .ci-val { font-size: .9375rem; color: var(--text); }
+.footer .ci-val,
+.footer .f-contact-item span { color: rgba(255,255,255,.6); }
 .contact-form {
   background: #fff;
   border-radius: var(--r-xl);
