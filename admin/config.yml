@@ -6,9 +6,9 @@
 
 backend:
   name: github
-  repo: GITHUB_KULLANICI_ADI/sabah-ezgi-site  # ← BU SATIRI GÜNCELLEYİN
+  repo: ismailipek11/sabah-ezgi-site
   branch: main
-  base_url: https://sveltia-cms-auth.WORKERS_ID.workers.dev  # ← Cloudflare Worker URL
+  base_url: https://sveltia-cms-auth.sabahezgi.workers.dev  # ← sonradan kurulacak
 
 media_folder: "images/blog"
 public_folder: "/images/blog"
