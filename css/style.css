@@ -760,6 +760,65 @@ p  { line-height: 1.75; }
 }
 .fg textarea { resize: vertical; min-height: 130px; }
 
+/* ─── Referanslar ────────────────────────────────────────── */
+.ref-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+.ref-card {
+  background: var(--white);
+  border-radius: var(--r-lg);
+  padding: 1.5rem;
+  border-top: 3px solid var(--gold);
+  box-shadow: var(--sh-sm);
+  transition: all var(--t-slow);
+}
+.ref-card:hover { transform: translateY(-4px); box-shadow: var(--sh-lg); }
+.ref-uni {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--gold-dark);
+  margin-bottom: .4rem;
+}
+.ref-card h4 { font-size: 1rem; color: var(--navy); margin-bottom: .3rem; }
+.ref-detail { font-size: .8125rem; color: var(--muted); line-height: 1.5; }
+.ref-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  font-size: .7rem;
+  font-weight: 600;
+  color: var(--navy);
+  background: rgba(6,39,92,.07);
+  padding: .2rem .6rem;
+  border-radius: var(--r-full);
+  margin-top: .6rem;
+}
+.ref-more {
+  background: var(--navy);
+  border-radius: var(--r-xl);
+  padding: 1.5rem 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .6rem;
+  align-items: center;
+  justify-content: center;
+}
+.ref-tag {
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.15);
+  color: rgba(255,255,255,.85);
+  font-size: .8125rem;
+  padding: .3rem .9rem;
+  border-radius: var(--r-full);
+}
+@media (max-width: 1024px) { .ref-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 768px) { .ref-grid { grid-template-columns: 1fr; } }
+
 /* ─── Blog list page ─────────────────────────────────────── */
 .blog-full {
   display: grid;
