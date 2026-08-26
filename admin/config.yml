@@ -1,14 +1,6 @@
-# ============================================================
-# Decap CMS — sabahezgitiryaki.com
-# Backend: GitHub  |  Hosting: Cloudflare Pages
-# KURULUM NOTU: github_repo'yu gerçek değerle güncelleyin
-# ============================================================
-
 backend:
-  name: github
-  repo: ismailipek11/sabah-ezgi-site
+  name: git-gateway
   branch: main
-  base_url: https://sveltia-cms-auth.sabahezgi.workers.dev  # ← sonradan kurulacak
 
 media_folder: "images/blog"
 public_folder: "/images/blog"
@@ -16,20 +8,18 @@ public_folder: "/images/blog"
 locale: tr
 
 collections:
-  # ── Blog Yazıları ──────────────────────────────────────────
   - name: "blog"
     label: "Blog Yazıları"
     label_singular: "Blog Yazısı"
     folder: "content/posts"
     create: true
     slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
-    summary: "{{title}} — {{date}}"
     fields:
-      - { label: "Başlık", name: "title", widget: "string", hint: "Makale başlığı" }
-      - { label: "Yayın Tarihi", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD.MM.YYYY" }
+      - { label: "Başlık", name: "title", widget: "string" }
+      - { label: "Yayın Tarihi", name: "date", widget: "datetime", format: "YYYY-MM-DD" }
       - { label: "Kategori", name: "category", widget: "select",
           options: ["Çalışma Teknikleri", "Sınav Stratejisi", "Motivasyon", "NLP & Hafıza", "Zaman Yönetimi", "Koçluk İpuçları"] }
-      - { label: "Özet (liste görünümü için)", name: "excerpt", widget: "text", hint: "2-3 cümle" }
+      - { label: "Özet", name: "excerpt", widget: "text" }
       - { label: "Kapak Görseli", name: "thumbnail", widget: "image", required: false }
-      - { label: "Tahmini Okuma Süresi (dk)", name: "readtime", widget: "number", default: 5 }
+      - { label: "Okuma Süresi (dk)", name: "readtime", widget: "number", default: 5 }
       - { label: "İçerik", name: "body", widget: "markdown" }
