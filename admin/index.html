@@ -6,70 +6,121 @@
   <meta name="robots" content="noindex">
   <title>Admin — Sabah Ezgi Tiryaki</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jodit/3.24.5/jodit.min.css">
   <style>
-    :root{--navy:#06275c;--gold:#C9A96E;--bg:#F9F8F6;--border:#e2e6ed;--text:#1a1a2e;--muted:#5a6275;}
+    :root{--navy:#06275c;--gold:#C9A96E;--sidebar:#0d1b35;--bg:#f4f5f7;--white:#fff;--border:#e2e6ed;--text:#1a1a2e;--muted:#5a6275;--red:#dc2626;--green:#16a34a;}
     *{box-sizing:border-box;margin:0;padding:0;}
     body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
 
-    /* Login */
+    /* ── LOGIN ── */
     #login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--navy);}
-    .login-box{background:white;border-radius:16px;padding:2.5rem;width:100%;max-width:380px;box-shadow:0 24px 64px rgba(0,0,0,.25);}
+    .login-box{background:var(--white);border-radius:16px;padding:2.5rem;width:100%;max-width:380px;box-shadow:0 24px 64px rgba(0,0,0,.3);}
     .login-logo{height:40px;margin-bottom:1.5rem;}
     .login-box h2{font-size:1.25rem;color:var(--navy);margin-bottom:.25rem;}
     .login-box p{font-size:.875rem;color:var(--muted);margin-bottom:1.5rem;}
-    .login-box input{width:100%;padding:.75rem 1rem;border:1.5px solid var(--border);border-radius:8px;font-size:.9375rem;margin-bottom:1rem;outline:none;font-family:inherit;}
+    .login-box input{width:100%;padding:.75rem 1rem;border:1.5px solid var(--border);border-radius:8px;font-size:.9375rem;margin-bottom:1rem;outline:none;font-family:inherit;transition:border-color .2s;}
     .login-box input:focus{border-color:var(--gold);}
-    .btn-login{width:100%;padding:.875rem;background:var(--gold);color:var(--navy);border:none;border-radius:8px;font-size:.9375rem;font-weight:600;cursor:pointer;}
-    .login-err{color:#dc2626;font-size:.875rem;margin-top:.75rem;display:none;}
+    .btn-gold{background:var(--gold);color:var(--navy);border:none;border-radius:8px;font-size:.9375rem;font-weight:600;cursor:pointer;padding:.875rem;width:100%;transition:opacity .2s;}
+    .btn-gold:hover{opacity:.9;}
+    .login-err{color:var(--red);font-size:.875rem;margin-top:.75rem;display:none;}
 
-    /* Nav */
-    #admin-screen{display:none;}
-    .admin-nav{background:var(--navy);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;}
-    .admin-nav img{height:36px;filter:brightness(0) invert(1);}
-    .admin-nav button{font-size:.8125rem;color:rgba(255,255,255,.7);background:none;border:1px solid rgba(255,255,255,.2);padding:.3rem .9rem;border-radius:20px;cursor:pointer;}
+    /* ── LAYOUT ── */
+    #admin-screen{display:none;min-height:100vh;}
+    .layout{display:flex;min-height:100vh;}
 
-    /* Tabs */
-    .tabs{display:flex;gap:0;border-bottom:2px solid var(--border);margin-bottom:2rem;}
-    .tab{padding:.75rem 1.5rem;font-size:.9375rem;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;}
-    .tab.active{color:var(--navy);border-bottom-color:var(--gold);}
+    /* ── SIDEBAR ── */
+    .sidebar{width:240px;background:var(--sidebar);flex-shrink:0;display:flex;flex-direction:column;position:fixed;top:0;bottom:0;left:0;overflow-y:auto;}
+    .sidebar-logo{padding:1.5rem 1.25rem 1rem;border-bottom:1px solid rgba(255,255,255,.08);}
+    .sidebar-logo img{height:36px;filter:brightness(0) invert(1);opacity:.9;}
+    .sidebar-nav{flex:1;padding:.75rem 0;}
+    .nav-item{display:flex;align-items:center;gap:.75rem;padding:.75rem 1.25rem;font-size:.875rem;color:rgba(255,255,255,.6);cursor:pointer;transition:all .2s;border-left:3px solid transparent;}
+    .nav-item:hover{color:rgba(255,255,255,.9);background:rgba(255,255,255,.05);}
+    .nav-item.active{color:#fff;background:rgba(255,255,255,.08);border-left-color:var(--gold);}
+    .nav-icon{font-size:1rem;width:20px;text-align:center;}
+    .nav-section{font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.3);padding:.75rem 1.25rem .25rem;}
+    .sidebar-footer{padding:1rem 1.25rem;border-top:1px solid rgba(255,255,255,.08);}
+    .btn-logout{width:100%;padding:.5rem;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.6);border-radius:6px;font-size:.8125rem;cursor:pointer;font-family:inherit;transition:all .2s;}
+    .btn-logout:hover{background:rgba(255,255,255,.12);color:#fff;}
 
-    .admin-body{max-width:860px;margin:2rem auto;padding:0 1.5rem 4rem;}
-    .page{display:none;} .page.active{display:block;}
+    /* ── MAIN ── */
+    .main{margin-left:240px;flex:1;padding:2rem;}
+    .page{display:none;}
+    .page.active{display:block;}
+    .page-head{margin-bottom:1.75rem;}
+    .page-head h1{font-size:1.5rem;color:var(--navy);margin-bottom:.25rem;}
+    .page-head p{font-size:.875rem;color:var(--muted);}
 
-    /* Cards */
-    .card{background:white;border-radius:12px;padding:2rem;box-shadow:0 2px 12px rgba(6,39,92,.08);margin-bottom:1.25rem;}
+    /* ── CARDS ── */
+    .card{background:var(--white);border-radius:12px;padding:1.75rem;box-shadow:0 1px 8px rgba(6,39,92,.07);margin-bottom:1.25rem;}
+    .card-title{font-size:1rem;font-weight:600;color:var(--navy);margin-bottom:1.25rem;padding-bottom:.75rem;border-bottom:1px solid var(--border);}
+
+    /* ── FORM ── */
     .fg{margin-bottom:1.25rem;}
-    .fg label{display:block;font-size:.875rem;font-weight:500;margin-bottom:.4rem;}
-    .fg input,.fg select,.fg textarea{width:100%;padding:.7rem 1rem;border:1.5px solid var(--border);border-radius:8px;font-size:.9375rem;font-family:inherit;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s;}
-    .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--gold);background:white;}
-    .fg textarea{resize:vertical;min-height:340px;font-size:.875rem;line-height:1.75;}
-    .row-2{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
-    .md-hint{background:rgba(201,169,110,.1);border-left:3px solid var(--gold);padding:.75rem 1rem;border-radius:0 8px 8px 0;font-size:.8125rem;color:var(--muted);margin-bottom:1.25rem;line-height:1.7;}
-    .btn-pub{background:var(--navy);color:white;border:none;padding:.875rem 2.5rem;border-radius:30px;font-size:.9375rem;font-weight:600;cursor:pointer;}
-    .btn-pub:hover{opacity:.9;}
-    .btn-pub:disabled{opacity:.5;cursor:default;}
-    #result,#result2{margin-top:1.25rem;padding:1rem 1.25rem;border-radius:8px;font-size:.9rem;display:none;}
-    .ok{background:#f0fdf4;color:#166534;border:1px solid #bbf7d0;}
-    .err{background:#fef2f2;color:#991b1b;border:1px solid #fecaca;}
+    .fg label{display:block;font-size:.8125rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem;}
+    .fg input,.fg select,.fg textarea{width:100%;padding:.7rem 1rem;border:1.5px solid var(--border);border-radius:8px;font-size:.9375rem;font-family:inherit;color:var(--text);background:var(--bg);outline:none;transition:border-color .2s,background .2s;}
+    .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--gold);background:var(--white);}
+    .fg textarea{resize:vertical;min-height:100px;}
+    .fg-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+    .fg-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;}
+    .fg-check{display:flex;align-items:center;gap:.6rem;cursor:pointer;}
+    .fg-check input[type=checkbox]{width:18px;height:18px;cursor:pointer;accent-color:var(--gold);}
+    .fg-check span{font-size:.9375rem;font-weight:500;}
+    .hint{font-size:.75rem;color:var(--muted);margin-top:.3rem;}
 
-    /* Post list */
-    .post-item{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;border:1px solid var(--border);border-radius:10px;margin-bottom:.75rem;background:white;}
+    /* ── BUTTONS ── */
+    .btn{display:inline-flex;align-items:center;gap:.4rem;padding:.65rem 1.5rem;border-radius:8px;font-size:.875rem;font-weight:600;cursor:pointer;border:none;transition:all .2s;font-family:inherit;}
+    .btn-primary{background:var(--navy);color:#fff;}
+    .btn-primary:hover{opacity:.9;}
+    .btn-primary:disabled{opacity:.5;cursor:default;}
+    .btn-danger{background:#fee2e2;color:var(--red);}
+    .btn-danger:hover{background:#fecaca;}
+    .btn-sm{padding:.4rem .9rem;font-size:.8rem;}
+    .btn-ghost{background:var(--bg);color:var(--muted);border:1px solid var(--border);}
+    .btn-ghost:hover{border-color:var(--navy);color:var(--navy);}
+    .btn-success{background:#dcfce7;color:var(--green);}
+
+    /* ── ALERT ── */
+    .alert{padding:.9rem 1.1rem;border-radius:8px;font-size:.875rem;margin-top:1rem;display:none;}
+    .alert.ok{background:#f0fdf4;color:var(--green);border:1px solid #bbf7d0;}
+    .alert.err{background:#fef2f2;color:var(--red);border:1px solid #fecaca;}
+
+    /* ── POST LIST ── */
+    .post-item{display:flex;align-items:center;gap:1rem;padding:1rem 1.25rem;border:1px solid var(--border);border-radius:10px;margin-bottom:.6rem;background:var(--white);transition:border-color .2s;}
     .post-item:hover{border-color:var(--gold);}
-    .post-name{font-size:.875rem;color:var(--text);font-weight:500;}
-    .post-date{font-size:.75rem;color:var(--muted);margin-top:2px;}
-    .post-actions{display:flex;gap:.5rem;}
-    .btn-edit{padding:.4rem .9rem;background:var(--navy);color:white;border:none;border-radius:6px;font-size:.8rem;cursor:pointer;}
-    .btn-del{padding:.4rem .9rem;background:#fee2e2;color:#991b1b;border:none;border-radius:6px;font-size:.8rem;cursor:pointer;}
-    .empty{text-align:center;padding:3rem;color:var(--muted);}
-    .loading{text-align:center;padding:2rem;color:var(--muted);}
+    .post-thumb{width:56px;height:42px;border-radius:6px;object-fit:cover;background:var(--bg);flex-shrink:0;}
+    .post-thumb-placeholder{width:56px;height:42px;border-radius:6px;background:var(--bg);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:1.25rem;}
+    .post-info{flex:1;min-width:0;}
+    .post-title{font-size:.9375rem;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+    .post-meta{font-size:.75rem;color:var(--muted);margin-top:2px;display:flex;gap:.75rem;}
+    .post-badge{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.15rem .5rem;border-radius:4px;background:rgba(201,169,110,.15);color:var(--gold-dark,#a8854d);}
+    .post-actions{display:flex;gap:.5rem;flex-shrink:0;}
 
-    /* Edit modal */
-    .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:100;display:none;align-items:center;justify-content:center;padding:1rem;}
-    .modal-bg.open{display:flex;}
-    .modal{background:white;border-radius:16px;padding:2rem;width:100%;max-width:820px;max-height:90vh;overflow-y:auto;}
-    .modal h3{font-size:1.125rem;color:var(--navy);margin-bottom:1.25rem;}
-    .modal-actions{display:flex;gap:1rem;margin-top:1.25rem;}
-    .btn-cancel{padding:.75rem 1.5rem;background:var(--bg);color:var(--muted);border:1px solid var(--border);border-radius:30px;font-size:.9375rem;cursor:pointer;}
+    /* ── CATEGORIES ── */
+    .cat-list{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1.25rem;}
+    .cat-tag{display:flex;align-items:center;gap:.4rem;background:var(--bg);border:1px solid var(--border);padding:.35rem .75rem;border-radius:20px;font-size:.875rem;}
+    .cat-del{background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;line-height:1;padding:0 0 0 .2rem;}
+    .cat-del:hover{color:var(--red);}
+    .cat-add-row{display:flex;gap:.5rem;}
+
+    /* ── IMAGE UPLOAD ── */
+    .img-upload-area{border:2px dashed var(--border);border-radius:8px;padding:1.5rem;text-align:center;cursor:pointer;transition:all .2s;position:relative;}
+    .img-upload-area:hover{border-color:var(--gold);background:rgba(201,169,110,.04);}
+    .img-upload-area input{position:absolute;inset:0;opacity:0;cursor:pointer;}
+    .img-preview{width:100%;max-height:180px;object-fit:cover;border-radius:6px;margin-top:.75rem;display:none;}
+
+    /* ── FEATURED LIST ── */
+    .feat-item{display:flex;align-items:center;gap:.75rem;padding:.75rem 1rem;border:1px solid var(--border);border-radius:8px;margin-bottom:.5rem;background:var(--white);}
+    .feat-info{flex:1;font-size:.875rem;font-weight:500;}
+    .feat-meta{font-size:.75rem;color:var(--muted);}
+
+    /* ── JODIT overrides ── */
+    .jodit-container{border-radius:8px !important;border-color:var(--border) !important;}
+    .jodit-toolbar__box{border-radius:8px 8px 0 0 !important;}
+
+    /* ── LOADING ── */
+    .loading{text-align:center;padding:3rem;color:var(--muted);}
+    .empty{text-align:center;padding:3rem;color:var(--muted);}
+    .empty-icon{font-size:2.5rem;margin-bottom:.75rem;}
   </style>
 </head>
 <body>
@@ -79,201 +130,557 @@
   <div class="login-box">
     <img class="login-logo" src="../images/logo.svg" alt="Logo">
     <h2>İçerik Paneli</h2>
-    <p>Blog yazısı eklemek için giriş yapın.</p>
+    <p>Yönetim paneline giriş yapın.</p>
     <input type="password" id="pwd" placeholder="Şifre" autocomplete="current-password">
-    <button class="btn-login" onclick="login()">Giriş Yap</button>
-    <div class="login-err" id="login-err">Yanlış şifre, tekrar deneyin.</div>
+    <button class="btn-gold" onclick="login()">Giriş Yap</button>
+    <div class="login-err" id="login-err">Yanlış şifre.</div>
   </div>
 </div>
 
 <!-- ADMİN -->
 <div id="admin-screen">
-  <nav class="admin-nav">
-    <img src="../images/logo.svg" alt="Logo">
-    <button onclick="logout()">Çıkış Yap</button>
-  </nav>
-  <div class="admin-body">
-    <div class="tabs">
-      <div class="tab active" onclick="switchTab('new',this)">✏️ Yeni Yazı</div>
-      <div class="tab" onclick="switchTab('list',this);loadPosts()">📋 Mevcut Yazılar</div>
-    </div>
+  <div class="layout">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <img src="../images/logo.svg" alt="Logo">
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">İçerik</div>
+        <div class="nav-item active" onclick="goto('posts')"><span class="nav-icon">📋</span> Blog Yazıları</div>
+        <div class="nav-item" onclick="goto('new-post')"><span class="nav-icon">✏️</span> Yeni Yazı</div>
+        <div class="nav-item" onclick="goto('featured');loadFeatured()"><span class="nav-icon">⭐</span> Öne Çıkanlar</div>
+        <div class="nav-section">Yönetim</div>
+        <div class="nav-item" onclick="goto('categories');loadCategories()"><span class="nav-icon">🗂️</span> Kategoriler</div>
+        <div class="nav-item" onclick="goto('settings');loadSettings()"><span class="nav-icon">⚙️</span> Site Ayarları</div>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="btn-logout" onclick="logout()">Çıkış Yap</button>
+      </div>
+    </aside>
 
-    <!-- YENİ YAZI -->
-    <div class="page active" id="page-new">
-      <div class="card">
-        <div class="fg"><label>Başlık *</label><input type="text" id="title" placeholder="Yazının başlığı"></div>
-        <div class="row-2">
-          <div class="fg"><label>Kategori</label>
-            <select id="category">
-              <option>Çalışma Teknikleri</option><option>Sınav Stratejisi</option>
-              <option>Motivasyon</option><option>NLP & Hafıza</option>
-              <option>Zaman Yönetimi</option><option>Koçluk İpuçları</option>
-            </select>
-          </div>
-          <div class="fg"><label>Okuma Süresi (dk)</label><input type="number" id="readtime" value="5" min="1" max="60"></div>
+    <!-- MAIN -->
+    <main class="main">
+
+      <!-- BLOG YAZILARI -->
+      <div class="page active" id="page-posts">
+        <div class="page-head">
+          <h1>Blog Yazıları</h1>
+          <p>Tüm blog yazılarını buradan yönetin.</p>
         </div>
-        <div class="fg"><label>Özet</label><input type="text" id="excerpt" placeholder="2-3 cümlelik kısa özet"></div>
-        <div class="md-hint">✍️ <strong>Markdown:</strong> <code>**kalın**</code> · <code>*italik*</code> · <code># Başlık</code> · <code>## Alt Başlık</code> · Boş satır = paragraf</div>
-        <div class="fg"><label>İçerik *</label><textarea id="body" placeholder="Yazınızı buraya yazın..."></textarea></div>
-        <button class="btn-pub" id="pub-btn" onclick="publish()">Yayınla →</button>
-        <div id="result"></div>
+        <div id="posts-list"><div class="loading">Yükleniyor…</div></div>
+        <div class="alert" id="posts-alert"></div>
       </div>
-    </div>
 
-    <!-- MEVCUT YAZILAR -->
-    <div class="page" id="page-list">
-      <div id="posts-list"><div class="loading">Yazılar yükleniyor…</div></div>
-      <div id="result2"></div>
-    </div>
+      <!-- YENİ YAZI -->
+      <div class="page" id="page-new-post">
+        <div class="page-head">
+          <h1 id="editor-title-label">Yeni Yazı</h1>
+        </div>
+        <div class="card">
+          <div class="fg"><label>Başlık *</label><input type="text" id="p-title" placeholder="Yazının başlığı" oninput="autoSlug()"></div>
+          <div class="fg-row">
+            <div class="fg">
+              <label>Permalink (slug)</label>
+              <input type="text" id="p-slug" placeholder="otomatik-olusturulur">
+              <div class="hint">URL: sabahezgitiryaki.com/blog/<span id="slug-preview">…</span></div>
+            </div>
+            <div class="fg">
+              <label>Kategori</label>
+              <select id="p-category"></select>
+            </div>
+          </div>
+          <div class="fg-row">
+            <div class="fg"><label>Özet</label><input type="text" id="p-excerpt" placeholder="2-3 cümlelik kısa özet"></div>
+            <div class="fg"><label>Okuma Süresi (dk)</label><input type="number" id="p-readtime" value="5" min="1" max="60"></div>
+          </div>
+          <div class="fg">
+            <label>Öne Çıkan Görsel</label>
+            <div class="img-upload-area" id="img-drop">
+              <input type="file" id="p-image-file" accept="image/*" onchange="handleImageUpload(this)">
+              <div>📸 Görsel seçmek için tıklayın veya sürükleyin</div>
+              <img class="img-preview" id="img-preview" src="" alt="Önizleme">
+              <div class="hint" style="margin-top:.5rem" id="img-status"></div>
+            </div>
+            <input type="hidden" id="p-image-url">
+          </div>
+          <div class="fg"><label>İçerik *</label><textarea id="p-body"></textarea></div>
+          <div style="display:flex;align-items:center;gap:1.5rem;margin-top:.5rem">
+            <label class="fg-check">
+              <input type="checkbox" id="p-featured">
+              <span>⭐ Anasayfada Öne Çıkar</span>
+            </label>
+          </div>
+          <div style="display:flex;gap:1rem;margin-top:1.5rem">
+            <button class="btn btn-primary" id="pub-btn" onclick="publishPost()">Yayınla</button>
+            <button class="btn btn-ghost" onclick="cancelEdit()">İptal</button>
+          </div>
+          <div class="alert" id="editor-alert"></div>
+        </div>
+      </div>
+
+      <!-- ÖNE ÇIKANLAR -->
+      <div class="page" id="page-featured">
+        <div class="page-head">
+          <h1>Öne Çıkan Yazılar</h1>
+          <p>Anasayfada gösterilecek blog yazıları. Yazı düzenlerken "Öne Çıkar" seçeneğini kullanın.</p>
+        </div>
+        <div id="featured-list"><div class="loading">Yükleniyor…</div></div>
+      </div>
+
+      <!-- KATEGORİLER -->
+      <div class="page" id="page-categories">
+        <div class="page-head">
+          <h1>Kategoriler</h1>
+          <p>Blog kategorilerini yönetin.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">Mevcut Kategoriler</div>
+          <div class="cat-list" id="cat-list"></div>
+          <div class="cat-add-row">
+            <input type="text" id="new-cat" placeholder="Yeni kategori adı…" style="flex:1;padding:.65rem 1rem;border:1.5px solid var(--border);border-radius:8px;font-size:.9375rem;outline:none;font-family:inherit;" onkeydown="if(event.key==='Enter')addCategory()">
+            <button class="btn btn-primary" onclick="addCategory()">Ekle</button>
+          </div>
+          <div style="margin-top:1.25rem">
+            <button class="btn btn-primary" onclick="saveCategories()">Kaydet</button>
+          </div>
+          <div class="alert" id="cat-alert"></div>
+        </div>
+      </div>
+
+      <!-- SITE AYARLARI -->
+      <div class="page" id="page-settings">
+        <div class="page-head">
+          <h1>Site Ayarları</h1>
+          <p>İletişim bilgileri, footer metni ve sosyal medya.</p>
+        </div>
+        <div class="card">
+          <div class="card-title">İletişim Bilgileri</div>
+          <div class="fg-row">
+            <div class="fg"><label>Telefon</label><input type="text" id="s-phone"></div>
+            <div class="fg"><label>E-posta</label><input type="text" id="s-email"></div>
+          </div>
+          <div class="fg"><label>Adres</label><input type="text" id="s-address"></div>
+          <div class="fg-row">
+            <div class="fg"><label>WhatsApp Numarası (sadece rakam, ör: 905059235102)</label><input type="text" id="s-whatsapp"></div>
+            <div class="fg"><label>Instagram Kullanıcı Adı</label><input type="text" id="s-instagram"></div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Footer</div>
+          <div class="fg"><label>Footer Kısa Metin</label><textarea id="s-footer-text" style="min-height:80px"></textarea></div>
+        </div>
+        <button class="btn btn-primary" onclick="saveSettings()">Kaydet</button>
+        <div class="alert" id="settings-alert"></div>
+      </div>
+
+    </main>
   </div>
 </div>
 
-<!-- DÜZENLEME MODAL -->
-<div class="modal-bg" id="edit-modal">
-  <div class="modal">
-    <h3>Yazıyı Düzenle</h3>
-    <div class="fg"><label>Başlık *</label><input type="text" id="e-title"></div>
-    <div class="row-2">
-      <div class="fg"><label>Kategori</label>
-        <select id="e-category">
-          <option>Çalışma Teknikleri</option><option>Sınav Stratejisi</option>
-          <option>Motivasyon</option><option>NLP & Hafıza</option>
-          <option>Zaman Yönetimi</option><option>Koçluk İpuçları</option>
-        </select>
-      </div>
-      <div class="fg"><label>Okuma Süresi (dk)</label><input type="number" id="e-readtime" value="5" min="1" max="60"></div>
-    </div>
-    <div class="fg"><label>Özet</label><input type="text" id="e-excerpt"></div>
-    <div class="fg"><label>İçerik *</label><textarea id="e-body" style="min-height:280px"></textarea></div>
-    <div class="modal-actions">
-      <button class="btn-pub" onclick="saveEdit()">Kaydet</button>
-      <button class="btn-cancel" onclick="closeModal()">İptal</button>
-    </div>
-    <div id="edit-result" style="margin-top:1rem;display:none;"></div>
-  </div>
-</div>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jodit/3.24.5/jodit.min.js"></script>
 <script>
-let pwd='';
-let editFile='',editSha='';
+let pwd = '';
+let editor = null;
+let editingFile = null;
+let editingSha = null;
+let categoriesSha = null;
+let settingsSha = null;
+let currentCategories = [];
+let slugEdited = false;
 
-// Giriş
-async function login(){
-  const input=document.getElementById('pwd').value;
-  const err=document.getElementById('login-err');
-  err.style.display='none';
-  const res=await api({action:'login',password:input});
-  if(res.ok){pwd=input;sessionStorage.setItem('cms_pwd',pwd);showAdmin();}
-  else{err.style.display='block';}
+// ── AUTH ──
+async function login() {
+  const input = document.getElementById('pwd').value;
+  const err = document.getElementById('login-err');
+  err.style.display = 'none';
+  const res = await api({ action: 'login', password: input });
+  if (res.ok) {
+    pwd = input;
+    sessionStorage.setItem('cms_pwd', pwd);
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('admin-screen').style.display = 'block';
+    initEditor();
+    loadPosts();
+    loadCategoriesForSelect();
+  } else {
+    err.style.display = 'block';
+  }
 }
-function logout(){sessionStorage.removeItem('cms_pwd');location.reload();}
-function showAdmin(){document.getElementById('login-screen').style.display='none';document.getElementById('admin-screen').style.display='block';}
-document.getElementById('pwd').addEventListener('keydown',e=>{if(e.key==='Enter')login();});
-const saved=sessionStorage.getItem('cms_pwd');
-if(saved){pwd=saved;showAdmin();}
-
-// Sekme
-function switchTab(name,el){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  el.classList.add('active');
-  document.getElementById('page-'+name).classList.add('active');
+function logout() { sessionStorage.removeItem('cms_pwd'); location.reload(); }
+document.getElementById('pwd').addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+const saved = sessionStorage.getItem('cms_pwd');
+if (saved) {
+  pwd = saved;
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('admin-screen').style.display = 'block';
+  initEditor();
+  loadPosts();
+  loadCategoriesForSelect();
 }
 
-// Yazıları listele
-async function loadPosts(){
-  const el=document.getElementById('posts-list');
-  el.innerHTML='<div class="loading">Yükleniyor…</div>';
-  const res=await api({action:'list',password:pwd});
-  if(!res.files||res.files.length===0){el.innerHTML='<div class="empty">Henüz blog yazısı yok.</div>';return;}
-  el.innerHTML=res.files.reverse().map(f=>{
-    const date=f.name.slice(0,10);
-    const name=f.name.slice(11).replace(/-/g,' ').replace('.md','');
+// ── NAVIGATION ──
+function goto(section) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + section).classList.add('active');
+  event.currentTarget.classList.add('active');
+  if (section === 'posts') loadPosts();
+}
+
+// ── EDITOR ──
+function initEditor() {
+  if (editor) return;
+  editor = Jodit.make('#p-body', {
+    height: 480,
+    language: 'tr',
+    toolbarButtonSize: 'middle',
+    buttons: [
+      'bold','italic','underline','strikethrough','|',
+      'ul','ol','|',
+      'font','fontsize','paragraph','|',
+      'table','link','|',
+      'image','|',
+      'align','|',
+      'undo','redo','|',
+      'hr','fullsize'
+    ],
+    uploader: {
+      insertImageAsBase64URI: false,
+      url: false
+    },
+    events: {
+      afterInsertImage: function() {}
+    }
+  });
+
+  // Custom image handler
+  editor.events.on('beforeCommand', function(command) {
+    if (command === 'insertImage') {
+      const inp = document.createElement('input');
+      inp.type = 'file';
+      inp.accept = 'image/*';
+      inp.onchange = async function() {
+        if (!inp.files[0]) return;
+        showAlert('editor-alert', 'Görsel yükleniyor…', 'ok');
+        const url = await uploadImageFile(inp.files[0]);
+        if (url) {
+          editor.selection.insertHTML(`<img src="${url}" alt="" style="max-width:100%">`);
+          hideAlert('editor-alert');
+        } else {
+          showAlert('editor-alert', 'Görsel yüklenemedi.', 'err');
+        }
+      };
+      inp.click();
+      return false;
+    }
+  });
+}
+
+// ── POSTS ──
+async function loadPosts() {
+  const el = document.getElementById('posts-list');
+  el.innerHTML = '<div class="loading">Yazılar yükleniyor…</div>';
+  const res = await api({ action: 'list', password: pwd });
+  if (!res.files || res.files.length === 0) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">📝</div>Henüz blog yazısı yok.<br><br><button class="btn btn-primary" onclick="goto(\'new-post\')">İlk Yazıyı Ekle</button></div>';
+    return;
+  }
+  el.innerHTML = res.files.map(f => {
+    const date = f.name.slice(0, 10);
+    const rawName = f.name.slice(11).replace(/-/g, ' ').replace('.md', '');
     return `<div class="post-item">
-      <div><div class="post-name">${name}</div><div class="post-date">${date}</div></div>
+      <div class="post-thumb-placeholder">📄</div>
+      <div class="post-info">
+        <div class="post-title">${rawName}</div>
+        <div class="post-meta"><span>${date}</span></div>
+      </div>
       <div class="post-actions">
-        <button class="btn-edit" onclick="openEdit('${f.name}','${f.sha}')">Düzenle</button>
-        <button class="btn-del" onclick="deletePost('${f.name}','${f.sha}')">Sil</button>
+        <button class="btn btn-sm btn-ghost" onclick="openEdit('${f.name}','${f.sha}')">Düzenle</button>
+        <button class="btn btn-sm btn-danger" onclick="deletePost('${f.name}','${f.sha}')">Sil</button>
       </div>
     </div>`;
   }).join('');
 }
 
-// Düzenleme modalı aç
-async function openEdit(fname,sha){
-  editFile=fname; editSha=sha;
-  const res=await api({action:'get',password:pwd,filename:fname});
-  if(!res.ok){alert('Yüklenemedi');return;}
-  // Frontmatter parse
-  const lines=res.content.split('\n');
-  let inFm=false,fm={},bodyLines=[];
-  let fmDone=false,fmCount=0;
-  for(const l of lines){
-    if(l==='---'&&!fmDone){fmCount++;if(fmCount===1){inFm=true;continue;}if(fmCount===2){inFm=false;fmDone=true;continue;}}
-    if(inFm){const[k,...v]=l.split(':');fm[k.trim()]=v.join(':').trim().replace(/^"|"$/g,'');}
-    else if(fmDone){bodyLines.push(l);}
+async function openEdit(filename, sha) {
+  const res = await api({ action: 'get', password: pwd, filename });
+  if (!res.ok) { alert('Yüklenemedi'); return; }
+
+  // Parse frontmatter
+  const lines = res.content.split('\n');
+  const fm = {};
+  let inFm = false, fmCount = 0, bodyStart = 0;
+  for (let i = 0; i < lines.length; i++) {
+    if (lines[i] === '---') {
+      fmCount++;
+      if (fmCount === 1) { inFm = true; continue; }
+      if (fmCount === 2) { inFm = false; bodyStart = i + 1; break; }
+    }
+    if (inFm) {
+      const idx = lines[i].indexOf(':');
+      if (idx > -1) {
+        const k = lines[i].slice(0, idx).trim();
+        const v = lines[i].slice(idx + 1).trim().replace(/^"|"$/g, '');
+        fm[k] = v;
+      }
+    }
   }
-  document.getElementById('e-title').value=fm.title||'';
-  document.getElementById('e-excerpt').value=fm.excerpt||'';
-  document.getElementById('e-readtime').value=fm.readtime||5;
-  document.getElementById('e-body').value=bodyLines.join('\n').trim();
-  // Kategori seç
-  const sel=document.getElementById('e-category');
-  for(let o of sel.options){if(o.value===fm.category){o.selected=true;break;}}
-  document.getElementById('edit-result').style.display='none';
-  document.getElementById('edit-modal').classList.add('open');
-}
-function closeModal(){document.getElementById('edit-modal').classList.remove('open');}
+  const body = lines.slice(bodyStart).join('\n').trim();
 
-// Kaydet
-async function saveEdit(){
-  const post={
-    title:document.getElementById('e-title').value.trim(),
-    category:document.getElementById('e-category').value,
-    excerpt:document.getElementById('e-excerpt').value.trim(),
-    readtime:document.getElementById('e-readtime').value,
-    body:document.getElementById('e-body').value.trim(),
-    sha:editSha
+  editingFile = filename;
+  editingSha = res.sha;
+  slugEdited = true;
+
+  document.getElementById('p-title').value = fm.title || '';
+  document.getElementById('p-slug').value = fm.slug || '';
+  document.getElementById('p-excerpt').value = fm.excerpt || '';
+  document.getElementById('p-readtime').value = fm.readtime || 5;
+  document.getElementById('p-featured').checked = fm.featured === 'true';
+  document.getElementById('p-image-url').value = fm.featured_image || '';
+
+  const preview = document.getElementById('img-preview');
+  if (fm.featured_image) { preview.src = fm.featured_image; preview.style.display = 'block'; }
+  else { preview.style.display = 'none'; }
+
+  editor.value = body;
+
+  // Set category
+  const sel = document.getElementById('p-category');
+  for (let o of sel.options) { if (o.value === fm.category) { o.selected = true; break; } }
+
+  document.getElementById('editor-title-label').textContent = 'Yazıyı Düzenle';
+  document.getElementById('pub-btn').textContent = 'Güncelle';
+  hideAlert('editor-alert');
+
+  // Navigate to editor
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-new-post').classList.add('active');
+  document.querySelector('.nav-item:nth-child(2)').classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+function cancelEdit() {
+  editingFile = null; editingSha = null; slugEdited = false;
+  document.getElementById('p-title').value = '';
+  document.getElementById('p-slug').value = '';
+  document.getElementById('p-excerpt').value = '';
+  document.getElementById('p-readtime').value = 5;
+  document.getElementById('p-featured').checked = false;
+  document.getElementById('p-image-url').value = '';
+  document.getElementById('img-preview').style.display = 'none';
+  document.getElementById('slug-preview').textContent = '…';
+  if (editor) editor.value = '';
+  document.getElementById('editor-title-label').textContent = 'Yeni Yazı';
+  document.getElementById('pub-btn').textContent = 'Yayınla';
+  goto('posts');
+}
+
+async function publishPost() {
+  const title = document.getElementById('p-title').value.trim();
+  const body = editor ? editor.value : '';
+  const btn = document.getElementById('pub-btn');
+  if (!title || !body) { showAlert('editor-alert', 'Başlık ve içerik zorunludur.', 'err'); return; }
+
+  btn.disabled = true;
+  btn.textContent = editingFile ? 'Güncelleniyor…' : 'Yayınlanıyor…';
+
+  const post = {
+    title,
+    slug: document.getElementById('p-slug').value.trim() || slugify(title),
+    category: document.getElementById('p-category').value,
+    excerpt: document.getElementById('p-excerpt').value.trim(),
+    readtime: document.getElementById('p-readtime').value,
+    featured_image: document.getElementById('p-image-url').value,
+    featured: document.getElementById('p-featured').checked,
+    body,
+    sha: editingSha
   };
-  if(!post.title||!post.body){alert('Başlık ve içerik zorunludur.');return;}
-  const res=await api({action:'update',password:pwd,post,filename:editFile});
-  const el=document.getElementById('edit-result');
-  el.style.display='block';
-  if(res.ok){el.className='ok';el.textContent='✓ Kaydedildi! Site güncelleniyor…';setTimeout(()=>{closeModal();loadPosts();},1500);}
-  else{el.className='err';el.textContent='Hata: '+(res.error||'Bilinmeyen hata');}
+
+  const action = editingFile ? 'update' : 'publish';
+  const res = await api({ action, password: pwd, post, filename: editingFile });
+
+  btn.disabled = false;
+  btn.textContent = editingFile ? 'Güncelle' : 'Yayınla';
+
+  if (res.ok) {
+    showAlert('editor-alert', '✓ ' + (editingFile ? 'Güncellendi' : 'Yayınlandı') + '! Site birkaç dakika içinde güncellenir.', 'ok');
+    cancelEdit();
+  } else {
+    showAlert('editor-alert', 'Hata: ' + (res.error || 'Bilinmeyen hata'), 'err');
+  }
 }
 
-// Sil
-async function deletePost(fname,sha){
-  if(!confirm(fname+' silinsin mi?'))return;
-  const res=await api({action:'delete',password:pwd,filename:fname,post:{sha}});
-  const el=document.getElementById('result2');
-  el.style.display='block';
-  if(res.ok){el.className='ok';el.textContent='✓ Silindi.';loadPosts();}
-  else{el.className='err';el.textContent='Hata: '+(res.error||'Silinemedi');}
+async function deletePost(filename, sha) {
+  if (!confirm('"' + filename + '" silinsin mi?')) return;
+  const res = await api({ action: 'delete', password: pwd, filename, sha });
+  if (res.ok) { showAlert('posts-alert', '✓ Silindi.', 'ok'); loadPosts(); }
+  else showAlert('posts-alert', 'Silinemedi.', 'err');
 }
 
-// Yeni yayınla
-async function publish(){
-  const title=document.getElementById('title').value.trim();
-  const body=document.getElementById('body').value.trim();
-  const result=document.getElementById('result');
-  const btn=document.getElementById('pub-btn');
-  if(!title||!body){result.className='err';result.style.display='block';result.textContent='Başlık ve içerik zorunludur.';return;}
-  btn.disabled=true;btn.textContent='Yayınlanıyor…';result.style.display='none';
-  const res=await api({action:'publish',password:pwd,post:{title,body,category:document.getElementById('category').value,excerpt:document.getElementById('excerpt').value.trim(),readtime:document.getElementById('readtime').value}});
-  btn.disabled=false;btn.textContent='Yayınla →';
-  if(res.ok){result.className='ok';result.style.display='block';result.textContent='✓ "'+title+'" yayınlandı! Site birkaç dakika içinde güncellenir.';document.getElementById('title').value='';document.getElementById('body').value='';document.getElementById('excerpt').value='';}
-  else{result.className='err';result.style.display='block';result.textContent='Hata: '+(res.error||'Bilinmeyen hata');}
+// ── IMAGE UPLOAD ──
+async function handleImageUpload(input) {
+  if (!input.files[0]) return;
+  const status = document.getElementById('img-status');
+  status.textContent = 'Yükleniyor…';
+  const url = await uploadImageFile(input.files[0]);
+  if (url) {
+    document.getElementById('p-image-url').value = url;
+    const preview = document.getElementById('img-preview');
+    preview.src = url;
+    preview.style.display = 'block';
+    status.textContent = '✓ Yüklendi';
+  } else {
+    status.textContent = '✗ Yükleme başarısız';
+  }
 }
 
-// API yardımcısı
-async function api(body){
-  try{
-    const r=await fetch('/api/cms',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+async function uploadImageFile(file) {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = async function(e) {
+      const res = await api({
+        action: 'upload-image',
+        password: pwd,
+        image: { name: file.name, data: e.target.result }
+      });
+      resolve(res.ok ? res.url : null);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+// ── FEATURED ──
+async function loadFeatured() {
+  const el = document.getElementById('featured-list');
+  el.innerHTML = '<div class="loading">Yükleniyor…</div>';
+  const res = await api({ action: 'get-featured', password: pwd });
+  if (!res.featured || res.featured.length === 0) {
+    el.innerHTML = '<div class="empty"><div class="empty-icon">⭐</div>Öne çıkan yazı yok.<br><small>Yazı düzenlerken "Anasayfada Öne Çıkar" seçeneğini işaretleyin.</small></div>';
+    return;
+  }
+  el.innerHTML = res.featured.map(f => `
+    <div class="feat-item">
+      <div class="feat-info">
+        ${f.title}
+        <div class="feat-meta">${f.category} · ${f.date}</div>
+      </div>
+      <button class="btn btn-sm btn-danger" onclick="removeFeatured('${f.filename}','${JSON.stringify(res.sha).replace(/'/g,"\\'")}')">Çıkar</button>
+    </div>`).join('');
+}
+
+async function removeFeatured(filename, sha) {
+  const res = await api({ action: 'update', password: pwd, post: { featured: false, sha: '' }, filename });
+  loadFeatured();
+}
+
+// ── CATEGORIES ──
+async function loadCategories() {
+  const res = await api({ action: 'get-categories', password: pwd });
+  currentCategories = res.categories || [];
+  categoriesSha = res.sha;
+  renderCategories();
+}
+
+async function loadCategoriesForSelect() {
+  const res = await api({ action: 'get-categories', password: pwd });
+  const cats = res.categories || ['Çalışma Teknikleri','Sınav Stratejisi','Motivasyon','NLP & Hafıza','Zaman Yönetimi','Koçluk İpuçları'];
+  const sel = document.getElementById('p-category');
+  sel.innerHTML = cats.map(c => `<option value="${c}">${c}</option>`).join('');
+}
+
+function renderCategories() {
+  const el = document.getElementById('cat-list');
+  el.innerHTML = currentCategories.map((c, i) =>
+    `<div class="cat-tag">${c}<button class="cat-del" onclick="removeCategory(${i})">×</button></div>`
+  ).join('');
+}
+
+function addCategory() {
+  const inp = document.getElementById('new-cat');
+  const val = inp.value.trim();
+  if (!val || currentCategories.includes(val)) return;
+  currentCategories.push(val);
+  renderCategories();
+  inp.value = '';
+}
+
+function removeCategory(i) {
+  currentCategories.splice(i, 1);
+  renderCategories();
+}
+
+async function saveCategories() {
+  const res = await api({ action: 'save-categories', password: pwd, categories: currentCategories, sha: categoriesSha });
+  if (res.ok) { showAlert('cat-alert', '✓ Kategoriler kaydedildi!', 'ok'); loadCategoriesForSelect(); }
+  else showAlert('cat-alert', 'Kayıt başarısız.', 'err');
+}
+
+// ── SETTINGS ──
+async function loadSettings() {
+  const res = await api({ action: 'get-settings', password: pwd });
+  const s = res.settings || {};
+  settingsSha = res.sha;
+  document.getElementById('s-phone').value = s.phone || '';
+  document.getElementById('s-email').value = s.email || '';
+  document.getElementById('s-address').value = s.address || '';
+  document.getElementById('s-whatsapp').value = s.whatsapp || '';
+  document.getElementById('s-instagram').value = s.instagram || '';
+  document.getElementById('s-footer-text').value = s.footer_text || '';
+}
+
+async function saveSettings() {
+  const settings = {
+    phone: document.getElementById('s-phone').value.trim(),
+    email: document.getElementById('s-email').value.trim(),
+    address: document.getElementById('s-address').value.trim(),
+    whatsapp: document.getElementById('s-whatsapp').value.trim(),
+    instagram: document.getElementById('s-instagram').value.trim(),
+    footer_text: document.getElementById('s-footer-text').value.trim()
+  };
+  const res = await api({ action: 'save-settings', password: pwd, settings, sha: settingsSha });
+  if (res.ok) showAlert('settings-alert', '✓ Ayarlar kaydedildi! Site güncelleniyor.', 'ok');
+  else showAlert('settings-alert', 'Kayıt başarısız.', 'err');
+}
+
+// ── SLUG ──
+function autoSlug() {
+  if (slugEdited) return;
+  const title = document.getElementById('p-title').value;
+  const slug = slugify(title);
+  document.getElementById('p-slug').value = slug;
+  document.getElementById('slug-preview').textContent = slug || '…';
+}
+
+document.getElementById('p-slug').addEventListener('input', function() {
+  slugEdited = this.value.length > 0;
+  document.getElementById('slug-preview').textContent = this.value || '…';
+});
+
+function slugify(text) {
+  return (text || '').toLowerCase()
+    .replace(/ğ/g,'g').replace(/ü/g,'u').replace(/ş/g,'s')
+    .replace(/ı/g,'i').replace(/ö/g,'o').replace(/ç/g,'c')
+    .replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-').slice(0,60);
+}
+
+// ── UTILS ──
+async function api(body) {
+  try {
+    const r = await fetch('/api/cms', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
     return await r.json();
-  }catch(e){return{ok:false,error:e.message};}
+  } catch(e) { return { ok: false, error: e.message }; }
 }
+
+function showAlert(id, msg, type) {
+  const el = document.getElementById(id);
+  el.className = 'alert ' + type;
+  el.textContent = msg;
+  el.style.display = 'block';
+  if (type === 'ok') setTimeout(() => { el.style.display = 'none'; }, 4000);
+}
+function hideAlert(id) { document.getElementById(id).style.display = 'none'; }
 </script>
 </body>
 </html>
