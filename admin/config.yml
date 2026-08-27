@@ -1,6 +1,9 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: ismailipek11/sabah-ezgi-site
   branch: main
+  base_url: https://sabahezgitiryaki.com
+  auth_endpoint: api/auth
 
 media_folder: "images/blog"
 public_folder: "/images/blog"
