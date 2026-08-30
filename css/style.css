@@ -479,7 +479,7 @@ p  { line-height: 1.75; }
   transition: all var(--t-slow);
 }
 .blog-card:hover { transform: translateY(-4px); box-shadow: var(--sh-lg); }
-.blog-card img { width: 100%; aspect-ratio: 3/2; object-fit: cover; }
+.blog-card img { width: 100%; aspect-ratio: 3/2; object-fit: cover; max-height: 200px; }
 .blog-body { padding: 1.5rem; }
 .blog-cat {
   font-size: .7rem;
@@ -872,7 +872,7 @@ p  { line-height: 1.75; }
   .about-badge { right: 0; }
   .srv-cards { grid-template-columns: repeat(3, 1fr); }
   .strip-grid { grid-template-columns: repeat(2, 1fr); }
-  .blog-cards { grid-template-columns: repeat(2, 1fr); }
+  .blog-cards { grid-template-columns: repeat(3, 1fr); }
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .about-split { grid-template-columns: 1fr; }
   .srv-detail-grid { grid-template-columns: 1fr; }
